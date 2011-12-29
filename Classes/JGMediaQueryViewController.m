@@ -342,7 +342,7 @@
         case JGMediaQueryTypeAlbums:    
         case JGMediaQueryTypeAlbumArtist: {            
             JGAlbumViewController *albumViewController = [[[JGAlbumViewController alloc] initWithNibName:@"JGAlbumViewController" bundle:nil] autorelease];
-            MPMediaItemCollection *albumCollection = [[self items] objectAtIndex:indexPath.row];
+            MPMediaItemCollection *albumCollection = [[self items] objectAtIndex:itemIndex];
             albumViewController.albumCollection = albumCollection;
             albumViewController.delegate = self;
             viewController = albumViewController;
