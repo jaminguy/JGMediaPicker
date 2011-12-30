@@ -11,6 +11,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 
 #import "MPMediaItem+JGExtensions.h"
+#import "MPMediaPlaylist+JGExtensions.h"
 #import "JGAlbumViewController.h"
 
 @interface JGMediaQueryViewController () 
@@ -84,6 +85,9 @@
                 self.items = [query collections];
                 if(self.items.count > kItemCountThresholdForTableViewSections) {
                     self.itemSections = [query collectionSections];
+                    if(self.itemSections.count <= 1) {
+                        self.itemSections = nil;
+                    }
                 }
             }break;
                 
@@ -243,6 +247,9 @@
         MPMediaQuerySection *querySection = [[self itemSections] objectAtIndex:indexPath.section];
         itemIndex = querySection.range.location + indexPath.row;        
     }
+    else if(self.queryType == JGMediaQueryTypeSongs) {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
     else {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
@@ -254,7 +261,7 @@
             
         case JGMediaQueryTypePlaylists: {
             MPMediaPlaylist *playlist = (MPMediaPlaylist *)mediaItemCollection;            
-            [[cell textLabel] setText:[playlist valueForProperty:MPMediaPlaylistPropertyName]];            
+            [[cell textLabel] setText:[playlist name]];
         }break;
             
         case JGMediaQueryTypeArtists: {
@@ -321,6 +328,21 @@
     
     switch (self.queryType) {
         case JGMediaQueryTypePlaylists: {
+            MPMediaPlaylist *playlist = (MPMediaPlaylist *)[[self items] objectAtIndex:itemIndex];
+            NSNumber *playlistPersistentID = [playlist persistentID];
+            NSString *playlistName = [playlist name];
+            
+            MPMediaQuery *playlistQuery = [[MPMediaQuery alloc] init];
+            MPMediaPropertyPredicate *predicate = [MPMediaPropertyPredicate predicateWithValue:playlistPersistentID forProperty:MPMediaPlaylistPropertyPersistentID comparisonType:MPMediaPredicateComparisonEqualTo];
+            [playlistQuery addFilterPredicate:predicate];
+            
+            JGMediaQueryViewController *playlistViewController = [[[JGMediaQueryViewController alloc] initWithNibName:@"JGMediaQueryViewController" bundle:nil] autorelease];
+            playlistViewController.title = playlistName;
+            playlistViewController.queryType = JGMediaQueryTypeSongs;
+            playlistViewController.mediaQuery = playlistQuery;
+            playlistViewController.delegate = self;
+            [playlistQuery release];
+            viewController = playlistViewController;
         }break;
             
         case JGMediaQueryTypeArtists: {
@@ -341,6 +363,17 @@
         }break;
             
         case JGMediaQueryTypeSongs: {
+            if([self.delegate respondsToSelector:@selector(jgMediaQueryViewController:didPickMediaItems:selectedItem:)]) {
+                MPMediaItemCollection *selectedMediaItemCollection = [[self items] objectAtIndex:itemIndex];
+                MPMediaItem *selectedMediaItem = [selectedMediaItemCollection representativeItem];
+
+                NSMutableArray *songsArray = [NSMutableArray arrayWithCapacity:selectedMediaItemCollection.count];
+                for (MPMediaItemCollection *mediaItemCollection in [self items]) {
+                    [songsArray addObject:[mediaItemCollection representativeItem]];
+                }
+                MPMediaItemCollection *mediaItemCollection = [MPMediaItemCollection collectionWithItems:songsArray];
+                [self.delegate jgMediaQueryViewController:self didPickMediaItems:mediaItemCollection selectedItem:selectedMediaItem];
+            }
         }break;
             
         case JGMediaQueryTypeAlbums:    

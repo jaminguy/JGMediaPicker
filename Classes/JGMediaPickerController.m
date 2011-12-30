@@ -86,7 +86,7 @@
     
     self.tabBarController = [[[UITabBarController alloc] init] autorelease];
     self.tabBarController.viewControllers = [NSArray arrayWithObjects:playlistsNavigationController, artistsNavigationController, albumsNavigationController, songsNavigationController, nil];
-    [[self tabBarController] setSelectedIndex:2];
+    [[self tabBarController] setSelectedIndex:0];
     [[self view] addSubview:self.tabBarController.view];
 }
 
