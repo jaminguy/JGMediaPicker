@@ -12,11 +12,12 @@
 
 #import "JGMediaQueryViewController.h"
 
-@interface JGMediaPickerController ()
+@interface JGMediaPickerController () <UITabBarControllerDelegate>
 
 @property (nonatomic, retain) UITabBarController *tabBarController;
 
 - (void)setupViewControllers;
+- (void)updateTabBarControllerIndex;
 
 @end
 
@@ -24,10 +25,19 @@
 
 @synthesize tabBarController;
 @synthesize delegate;
+@synthesize selectedTabIndex;
 
 - (void)dealloc {
     self.tabBarController = nil;
     [super dealloc];
+}
+
+- (id)init {
+    self = [super init];
+    if(self) {
+        selectedTabIndex = JGMediaPickerTabIndex_Artists;
+    }
+    return self;
 }
 
 - (void)setupViewControllers {
@@ -69,7 +79,8 @@
     
     self.tabBarController = [[[UITabBarController alloc] init] autorelease];
     self.tabBarController.viewControllers = [NSArray arrayWithObjects:playlistsNavigationController, artistsNavigationController, albumsNavigationController, songsNavigationController, nil];
-    [[self tabBarController] setSelectedIndex:0];
+    self.tabBarController.delegate = self;
+    [self updateTabBarControllerIndex];
     [[self view] addSubview:self.tabBarController.view];
 }
 
@@ -91,12 +102,28 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+- (void)setSelectedTabIndex:(JGMediaPickerTabIndex)newTabIndex {
+    if(selectedTabIndex != newTabIndex) {
+        selectedTabIndex = newTabIndex;
+        [self updateTabBarControllerIndex];
+    }
+}
+
+- (void)updateTabBarControllerIndex {
+    if(self.tabBarController.selectedIndex != selectedTabIndex) {
+        self.tabBarController.selectedIndex = selectedTabIndex;
+    }
+}
+
+- (void)tabBarController:(UITabBarController *)aTabBarController didSelectViewController:(UIViewController *)viewController {
+    self.selectedTabIndex = aTabBarController.selectedIndex;
+}
+
 - (void)jgMediaQueryViewController:(JGMediaQueryViewController *)mediaQueryViewController didPickMediaItems:(MPMediaItemCollection *)mediaItemCollection selectedItem:(MPMediaItem *)selectedItem {
     if([self.delegate respondsToSelector:@selector(jgMediaPicker:didPickMediaItems:selectedItem:)]) {
         [self.delegate jgMediaPicker:self didPickMediaItems:mediaItemCollection selectedItem:selectedItem];
     }
 }
-
 
 - (void)jgMediaQueryViewControllerDidCancel:(JGMediaQueryViewController *)mediaPicker {
     if([self.delegate respondsToSelector:@selector(jgMediaPickerDidCancel:)]) {

@@ -10,9 +10,19 @@
 
 @class MPMediaItemCollection, MPMediaItem;
 
+typedef enum {
+    JGMediaPickerTabIndex_Playslists,
+    JGMediaPickerTabIndex_Artists,
+    JGMediaPickerTabIndex_Albums,
+    JGMediaPickerTabIndex_Songs
+} JGMediaPickerTabIndex;
+
 @interface JGMediaPickerController : UIViewController
 
 @property (nonatomic, retain) id delegate;
+
+//defaults to JGMediaPickerTabIndex_Artists
+@property (nonatomic, assign) JGMediaPickerTabIndex selectedTabIndex;
 
 @end
 
