@@ -16,7 +16,7 @@
 
 @property (nonatomic, retain) UITabBarController *tabBarController;
 
-- (void)initialSetup;
+- (void)setupViewControllers;
 
 @end
 
@@ -30,29 +30,12 @@
     [super dealloc];
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        //[self initialSetup];
-    }
-    return self;
-}
-
-- (id)init {
-    self = [super init];
-    if(self) {
-        //[self initialSetup];
-    }
-    return self;
-}
-
-- (void)initialSetup {
+- (void)setupViewControllers {
     JGMediaQueryViewController *playlistsViewController = [[[JGMediaQueryViewController alloc] initWithNibName:@"JGMediaQueryViewController" bundle:nil] autorelease];
     playlistsViewController.queryType = JGMediaQueryTypePlaylists;
     playlistsViewController.mediaQuery = [MPMediaQuery playlistsQuery];
     playlistsViewController.title = NSLocalizedString(@"Playlists", @"Playlists");
-    playlistsViewController.tabBarItem.image = [UIImage imageNamed:@"first"];
+    playlistsViewController.tabBarItem.image = [UIImage imageNamed:@"Playlists.png"];
     playlistsViewController.delegate = self;
     playlistsViewController.showsCancelButton = YES;
     UINavigationController *playlistsNavigationController = [[[UINavigationController alloc] initWithRootViewController:playlistsViewController] autorelease];
@@ -61,7 +44,7 @@
     artistsViewController.queryType = JGMediaQueryTypeArtists;
     artistsViewController.mediaQuery = [MPMediaQuery artistsQuery];
     artistsViewController.title = NSLocalizedString(@"Artists", @"Artists");
-    artistsViewController.tabBarItem.image = [UIImage imageNamed:@"first"];
+    artistsViewController.tabBarItem.image = [UIImage imageNamed:@"Artists.png"];
     artistsViewController.delegate = self;
     artistsViewController.showsCancelButton = YES;
     UINavigationController *artistsNavigationController = [[[UINavigationController alloc] initWithRootViewController:artistsViewController] autorelease];
@@ -70,7 +53,7 @@
     albumsViewController.queryType = JGMediaQueryTypeAlbums;
     albumsViewController.mediaQuery = [MPMediaQuery albumsQuery];
     albumsViewController.title = NSLocalizedString(@"Albums", @"Albums");
-    albumsViewController.tabBarItem.image = [UIImage imageNamed:@"first"];
+    albumsViewController.tabBarItem.image = [UIImage imageNamed:@"Albums.png"];
     albumsViewController.delegate = self;
     albumsViewController.showsCancelButton = YES;
     UINavigationController *albumsNavigationController = [[[UINavigationController alloc] initWithRootViewController:albumsViewController] autorelease];
@@ -79,7 +62,7 @@
     songsViewController.queryType = JGMediaQueryTypeSongs;
     songsViewController.mediaQuery = [MPMediaQuery songsQuery];
     songsViewController.title = NSLocalizedString(@"Songs", @"Songs");
-    songsViewController.tabBarItem.image = [UIImage imageNamed:@"first"];
+    songsViewController.tabBarItem.image = [UIImage imageNamed:@"Songs.png"];
     songsViewController.delegate = self;
     songsViewController.showsCancelButton = YES;
     UINavigationController *songsNavigationController = [[[UINavigationController alloc] initWithRootViewController:songsViewController] autorelease];
@@ -96,7 +79,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self initialSetup];
+    [self setupViewControllers];
 }
 
 - (void)viewDidUnload {
