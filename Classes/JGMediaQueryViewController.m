@@ -41,6 +41,7 @@
 @synthesize delegate;
 @synthesize queryType;
 @synthesize mediaQuery;
+@synthesize showsCancelButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -115,7 +116,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonTap:)] autorelease];
+    if(self.showsCancelButton) {
+        self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonTap:)] autorelease];
+    }
     
     [[self itemTableView] reloadData];
 }
@@ -332,6 +335,7 @@
             albumsViewController.title = artist;
             albumsViewController.queryType = JGMediaQueryTypeAlbums;
             albumsViewController.mediaQuery = albumsQuery;
+            albumsViewController.delegate = self;
             [albumsQuery release];
             viewController = albumsViewController;
         }break;
@@ -356,6 +360,19 @@
         [[self navigationController] pushViewController:viewController animated:YES];
     }
      
+}
+
+#pragma jgMediaQueryViewControllerDelegate callbacks
+- (void)jgMediaQueryViewController:(JGMediaQueryViewController *)mediaQueryViewController didPickMediaItems:(MPMediaItemCollection *)mediaItemCollection selectedItem:(MPMediaItem *)selectedItem {
+    if([self.delegate respondsToSelector:@selector(jgMediaQueryViewController:didPickMediaItems:selectedItem:)]) {
+        [self.delegate jgMediaQueryViewController:self didPickMediaItems:mediaItemCollection selectedItem:selectedItem];
+    }
+}
+
+- (void)jgMediaQueryViewControllerDidCancel:(JGMediaQueryViewController *)mediaPicker {
+    if([self.delegate respondsToSelector:@selector(jgMediaQueryViewControllerDidCancel:)]) {
+        [self.delegate jgMediaQueryViewControllerDidCancel:self];
+    }
 }
 
 #pragma JGAlbumViewControllerDelegate callback

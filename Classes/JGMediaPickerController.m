@@ -54,6 +54,7 @@
     playlistsViewController.title = NSLocalizedString(@"Playlists", @"Playlists");
     playlistsViewController.tabBarItem.image = [UIImage imageNamed:@"first"];
     playlistsViewController.delegate = self;
+    playlistsViewController.showsCancelButton = YES;
     UINavigationController *playlistsNavigationController = [[[UINavigationController alloc] initWithRootViewController:playlistsViewController] autorelease];
     
     JGMediaQueryViewController *artistsViewController = [[[JGMediaQueryViewController alloc] initWithNibName:@"JGMediaQueryViewController" bundle:nil] autorelease];
@@ -62,6 +63,7 @@
     artistsViewController.title = NSLocalizedString(@"Artists", @"Artists");
     artistsViewController.tabBarItem.image = [UIImage imageNamed:@"first"];
     artistsViewController.delegate = self;
+    artistsViewController.showsCancelButton = YES;
     UINavigationController *artistsNavigationController = [[[UINavigationController alloc] initWithRootViewController:artistsViewController] autorelease];
     
     JGMediaQueryViewController *albumsViewController = [[[JGMediaQueryViewController alloc] initWithNibName:@"JGMediaQueryViewController" bundle:nil] autorelease];
@@ -70,6 +72,7 @@
     albumsViewController.title = NSLocalizedString(@"Albums", @"Albums");
     albumsViewController.tabBarItem.image = [UIImage imageNamed:@"first"];
     albumsViewController.delegate = self;
+    albumsViewController.showsCancelButton = YES;
     UINavigationController *albumsNavigationController = [[[UINavigationController alloc] initWithRootViewController:albumsViewController] autorelease];
     
     JGMediaQueryViewController *songsViewController = [[[JGMediaQueryViewController alloc] initWithNibName:@"JGMediaQueryViewController" bundle:nil] autorelease];
@@ -78,6 +81,7 @@
     songsViewController.title = NSLocalizedString(@"Songs", @"Songs");
     songsViewController.tabBarItem.image = [UIImage imageNamed:@"first"];
     songsViewController.delegate = self;
+    songsViewController.showsCancelButton = YES;
     UINavigationController *songsNavigationController = [[[UINavigationController alloc] initWithRootViewController:songsViewController] autorelease];
     
     self.tabBarController = [[[UITabBarController alloc] init] autorelease];

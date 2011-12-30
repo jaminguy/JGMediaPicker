@@ -25,6 +25,7 @@ typedef enum {
 @property (nonatomic, retain) id delegate;
 @property (nonatomic, assign) JGMediaQueryType queryType;
 @property (nonatomic, retain) MPMediaQuery *mediaQuery;
+@property (nonatomic, assign) BOOL showsCancelButton;
 
 @end
 
