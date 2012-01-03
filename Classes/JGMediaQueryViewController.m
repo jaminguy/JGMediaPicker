@@ -117,6 +117,10 @@
     [self notifyDelegateOfCancellation];
 }
 
+- (void)mediaLibraryDidChange:(NSNotification *)notification {
+    [self updateItems];
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad {
@@ -126,14 +130,14 @@
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonTap:)] autorelease];
     }
     
-    [[self itemTableView] reloadData];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaLibraryDidChange:) name:MPMediaLibraryDidChangeNotification object:nil];
+    [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
 }
 
 - (void)viewDidUnload {
     [self setItemTableView:nil];
+    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {

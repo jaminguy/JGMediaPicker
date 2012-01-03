@@ -58,12 +58,10 @@
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     [[self tableView] setSeparatorColor:kSeparatorColor];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaLibraryDidChange:) name:MPMediaLibraryDidChangeNotification object:nil];
+    [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
 }
 
 - (void)viewDidUnload
@@ -73,6 +71,7 @@
     [self setAlbumTitleLabel:nil];
     [self setAlbumReleaseDateLabel:nil];
     [self setAlbumTrackCountTimeLabel:nil];
+    [[MPMediaLibrary defaultMediaLibrary] endGeneratingLibraryChangeNotifications];
     [super viewDidUnload];
 }
 
@@ -109,6 +108,10 @@
         [self.tableView reloadData];
         [self updateUI];
     }
+}
+
+- (void)mediaLibraryDidChange:(NSNotification *)notification {
+    [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
