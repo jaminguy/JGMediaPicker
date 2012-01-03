@@ -70,15 +70,17 @@
 }
 
 - (void)updateItems {
-    MPMediaQuery *query  = self.mediaQuery;
+    MPMediaQuery *query = self.mediaQuery;
     if(query) {
         switch (self.queryType) {
+            //don't ever want sections for these types
             case JGMediaQueryTypePlaylists: 
             case JGMediaQueryTypeAlbumArtist: {
                 self.items = [query collections];
                 self.itemSections = nil;
             }break;
                 
+            //do wan't sections for these types if item count passes threshold
             case JGMediaQueryTypeArtists: 
             case JGMediaQueryTypeAlbums: 
             case JGMediaQueryTypeSongs: {
@@ -140,8 +142,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+    return YES;
 }
 
 - (void)dealloc {

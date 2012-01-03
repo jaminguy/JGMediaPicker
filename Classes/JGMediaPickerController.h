@@ -17,12 +17,15 @@ typedef enum {
     JGMediaPickerTabIndex_Songs
 } JGMediaPickerTabIndex;
 
-@interface JGMediaPickerController : UIViewController
+@interface JGMediaPickerController : NSObject
 
 @property (nonatomic, retain) id delegate;
 
 //defaults to JGMediaPickerTabIndex_Artists
 @property (nonatomic, assign) JGMediaPickerTabIndex selectedTabIndex;
+
+//This represents the underlying UIViewController used for presenting by the delegate
+@property (nonatomic, retain, readonly) UIViewController *viewController;
 
 @end
 

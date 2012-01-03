@@ -15,6 +15,7 @@
 @interface JGMediaPickerController () <UITabBarControllerDelegate>
 
 @property (nonatomic, retain) UITabBarController *tabBarController;
+@property (nonatomic, retain) UIViewController *viewController;
 
 - (void)setupViewControllers;
 - (void)updateTabBarControllerIndex;
@@ -23,6 +24,7 @@
 
 @implementation JGMediaPickerController
 
+@synthesize viewController;
 @synthesize tabBarController;
 @synthesize delegate;
 @synthesize selectedTabIndex;
@@ -36,6 +38,7 @@
     self = [super init];
     if(self) {
         selectedTabIndex = JGMediaPickerTabIndex_Artists;
+        [self setupViewControllers];
     }
     return self;
 }
@@ -81,25 +84,8 @@
     self.tabBarController.viewControllers = [NSArray arrayWithObjects:playlistsNavigationController, artistsNavigationController, albumsNavigationController, songsNavigationController, nil];
     self.tabBarController.delegate = self;
     [self updateTabBarControllerIndex];
-    [[self view] addSubview:self.tabBarController.view];
-}
 
-- (void)loadView {
-    self.view = [[[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    [self setupViewControllers];
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    self.tabBarController = nil;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    self.viewController = self.tabBarController;
 }
 
 - (void)setSelectedTabIndex:(JGMediaPickerTabIndex)newTabIndex {

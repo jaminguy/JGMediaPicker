@@ -52,11 +52,14 @@
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MC45MjU0OTAxOTYxIDAuOTI1NDkwMTk2MSAwLjkyNTQ5MDE5NjEAA</bytes>
 								</object>
+								<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
+									<string key="IBUIAccessibilityLabel"/>
+								</object>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
 							<object class="IBUIView" id="548596930">
 								<reference key="NSNextResponder" ref="729612106"/>
-								<int key="NSvFlags">308</int>
+								<int key="NSvFlags">305</int>
 								<string key="NSFrame">{{272, 0}, {1, 41}}</string>
 								<reference key="NSSuperview" ref="729612106"/>
 								<reference key="NSWindow"/>
@@ -255,11 +258,13 @@
 						<int key="objectID">5</int>
 						<reference key="object" ref="177446632"/>
 						<reference key="parent" ref="780234500"/>
+						<string key="objectName">Left Divider View</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">6</int>
 						<reference key="object" ref="548596930"/>
 						<reference key="parent" ref="780234500"/>
+						<string key="objectName">Right Divider View</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">9</int>
