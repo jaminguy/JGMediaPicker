@@ -111,6 +111,7 @@
 }
 
 - (void)mediaLibraryDidChange:(NSNotification *)notification {
+    [self updateUI];
     [self.tableView reloadData];
 }
 
