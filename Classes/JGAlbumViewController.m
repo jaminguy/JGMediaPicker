@@ -97,7 +97,7 @@
         self.albumReleaseDateLabel.text = yearString ? [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Released", @"Released"), yearString] : nil;
         NSNumber *totalTimeInSeconds = [[self albumCollection] playbackLength];
         NSInteger totalTimeInMinutes = (NSInteger)[totalTimeInSeconds doubleValue] / 60;
-        self.albumTrackCountTimeLabel.text = [NSString stringWithFormat:@"%d Songs, %d Mins.", self.albumCollection.count, totalTimeInMinutes];
+        self.albumTrackCountTimeLabel.text = [NSString stringWithFormat:@"%d %@, %d Mins.", self.albumCollection.count, NSLocalizedString(@"Songs", @"Songs"), totalTimeInMinutes];
     }
 }
 
