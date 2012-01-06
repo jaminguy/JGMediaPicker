@@ -12,4 +12,11 @@
 
 - (NSNumber *)playbackLength;
 
+// Returns YES if none of the assets represented in 
+// this collection have been downloaded from the cloud.
+- (BOOL)hasNoLocalItems;
+
+// Returns YES if all items in the collection have been deleted.
+- (BOOL)hasNoPlayableItems;
+
 @end
