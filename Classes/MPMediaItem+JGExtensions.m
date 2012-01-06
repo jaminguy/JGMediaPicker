@@ -26,6 +26,14 @@
     return [self valueForProperty:MPMediaItemPropertyAlbumTitle];
 }
 
+- (NSURL *)assetURL {
+	return [self valueForProperty:MPMediaItemPropertyAssetURL];
+}
+
+- (NSString *)persistentID {
+	return [self valueForProperty:MPMediaItemPropertyPersistentID];
+}
+
 - (UIImage *)artworkWithSize:(CGSize)size {
     UIImage *image = nil;
     MPMediaItemArtwork *artwork = [self valueForProperty:MPMediaItemPropertyArtwork];
@@ -85,6 +93,30 @@
         }
     }
     return timeString;
+}
+
+- (BOOL)assetNeedsToDownload {
+	return ([self assetURL] == nil);
+}
+
+- (BOOL)assetHasBeenDeleted {
+	if ([self assetURL] == nil) {
+		return NO;
+	} else {
+		NSString *urlString = [[self assetURL] absoluteString];
+		BOOL assetURLPointsNowhere = ([urlString rangeOfString:@"ipod-library://item/item.(null)"].location != NSNotFound);
+		return assetURLPointsNowhere;
+	}
+}
+
+- (BOOL)existsInLibrary {
+	MPMediaPropertyPredicate *predicate = [MPMediaPropertyPredicate predicateWithValue:[self persistentID]
+																		   forProperty: MPMediaItemPropertyPersistentID];
+	MPMediaQuery *query = [[MPMediaQuery alloc] init];
+	[query addFilterPredicate:predicate];
+	BOOL exists = ([[query items] count] != 0);
+	[query release];
+	return exists;
 }
 
 @end
