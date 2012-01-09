@@ -19,4 +19,20 @@
     return [NSNumber numberWithDouble:totalTime];
 }
 
+- (BOOL)hasNoLocalItems {
+	for (MPMediaItem *mediaItem in self.items) {
+		if ([mediaItem existsInLibrary] && ![mediaItem assetNeedsToDownload])
+			return NO;
+	}
+	return YES;
+}
+
+- (BOOL)hasNoPlayableItems {
+	for (MPMediaItem *mediaItem in self.items) {
+		if ([mediaItem existsInLibrary] && ![mediaItem assetHasBeenDeleted])
+			return NO;
+	}
+	return YES;
+}
+
 @end
