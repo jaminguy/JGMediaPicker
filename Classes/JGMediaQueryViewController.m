@@ -162,13 +162,11 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    NSString *sectionTitle = nil;
-    
+    NSString *sectionTitle = nil;    
     if(self.itemSections.count) {
         MPMediaQuerySection *querySection = [[self itemSections] objectAtIndex:section];
         sectionTitle = querySection.title;
-    }
-    
+    }    
     return sectionTitle;
 }
 
@@ -297,28 +295,24 @@
 #pragma mark - Table view delegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    CGFloat height;
+    CGFloat height = 44.0;
     switch (self.queryType) {
         case JGMediaQueryTypePlaylists: {
-            height = 44.0;
+            height = kPlaylistCellHeight;
         }break;
             
         case JGMediaQueryTypeArtists: {
-            height = 44.0;
+            height = kArtistCellHeight;
         }break;
             
         case JGMediaQueryTypeAlbums:
         case JGMediaQueryTypeAlbumArtist: {
-            height = 55.0;
+            height = kAlbumCellHeight;
         }break;
             
         case JGMediaQueryTypeSongs: {
-            height = 44.0;
+            height = kSongCellHeight;
         }break;
-            
-        default:
-            height = 44.0;
-            break;
     }
     return height;
 }

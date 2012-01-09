@@ -143,7 +143,7 @@
     cell.trackLengthLabel.text = [mediaItem trackLengthString];
 
     //make odd rows gray    
-    cell.contentView.backgroundColor = indexPath.row % 2 != 0 ? kGrayBackgroundColor : [UIColor whiteColor];
+    cell.backgroundView.backgroundColor = indexPath.row % 2 != 0 ? kGrayBackgroundColor : [UIColor whiteColor];
 
     return cell;
 }
