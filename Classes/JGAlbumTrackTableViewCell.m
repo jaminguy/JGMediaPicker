@@ -13,16 +13,9 @@
 @synthesize trackNameLabel;
 @synthesize trackLengthLabel;
 
-- (void)dealloc {
-    [trackNumberLabel release];
-    [trackNameLabel release];
-    [trackLengthLabel release];
-    [super dealloc];
-}
-
 - (void)awakeFromNib {
     [super awakeFromNib];
-    self.backgroundView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+    self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 @end

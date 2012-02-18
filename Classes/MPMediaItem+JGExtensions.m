@@ -115,7 +115,6 @@
 	MPMediaQuery *query = [[MPMediaQuery alloc] init];
 	[query addFilterPredicate:predicate];
 	BOOL exists = ([[query items] count] != 0);
-	[query release];
 	return exists;
 }
 

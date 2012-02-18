@@ -103,8 +103,7 @@
 
 - (void)setAlbumCollection:(MPMediaItemCollection *)newAlbumCollection {
     if(newAlbumCollection != albumCollection) {
-        [albumCollection release];
-        albumCollection = [newAlbumCollection retain];
+        albumCollection = newAlbumCollection;
         [self.tableView reloadData];
         [self updateUI];
     }
@@ -157,12 +156,4 @@
     }
 }
 
-- (void)dealloc {
-    [albumArtImageView release];
-    [albumArtistLabel release];
-    [albumTitleLabel release];
-    [albumReleaseDateLabel release];
-    [albumTrackCountTimeLabel release];
-    [super dealloc];
-}
 @end
