@@ -63,8 +63,7 @@
 
 - (void)setMediaQuery:(MPMediaQuery *)newMediaQuery {
     if(mediaQuery != newMediaQuery) {
-        [mediaQuery release];
-        mediaQuery = [newMediaQuery retain];
+        mediaQuery = newMediaQuery;
         [self updateItems];
     }
 }
@@ -127,7 +126,7 @@
     [super viewDidLoad];
     
     if(self.showsCancelButton) {
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonTap:)] autorelease];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonTap:)];
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaLibraryDidChange:) name:MPMediaLibraryDidChangeNotification object:nil];
@@ -147,11 +146,6 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return YES;
-}
-
-- (void)dealloc {
-    [itemTableView release];
-    [super dealloc];
 }
 
 #pragma mark - Table view data source
@@ -214,14 +208,14 @@
         case JGMediaQueryTypePlaylists: {            
             cell = [tableView dequeueReusableCellWithIdentifier:PlaylistCellIdentifier];
             if (cell == nil) {
-                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:PlaylistCellIdentifier] autorelease];        
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:PlaylistCellIdentifier];        
             }
         }break;
             
         case JGMediaQueryTypeArtists: {
             cell = [tableView dequeueReusableCellWithIdentifier:ArtistCellIdentifier];
             if (cell == nil) {
-                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ArtistCellIdentifier] autorelease];        
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ArtistCellIdentifier];        
             }
         }break;
             
@@ -229,14 +223,14 @@
         case JGMediaQueryTypeAlbumArtist: {
             cell = [tableView dequeueReusableCellWithIdentifier:AlbumCellIdentifier];
             if (cell == nil) {
-                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:AlbumCellIdentifier] autorelease];        
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:AlbumCellIdentifier];        
             }
         }break;
             
         case JGMediaQueryTypeSongs: {
             cell = [tableView dequeueReusableCellWithIdentifier:SongCellIdentifier];
             if (cell == nil) {
-                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:SongCellIdentifier] autorelease];        
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:SongCellIdentifier];        
             }
         }break;
             
@@ -335,12 +329,11 @@
             MPMediaPropertyPredicate *predicate = [MPMediaPropertyPredicate predicateWithValue:playlistPersistentID forProperty:MPMediaPlaylistPropertyPersistentID comparisonType:MPMediaPredicateComparisonEqualTo];
             [playlistQuery addFilterPredicate:predicate];
             
-            JGMediaQueryViewController *playlistViewController = [[[JGMediaQueryViewController alloc] initWithNibName:@"JGMediaQueryViewController" bundle:nil] autorelease];
+            JGMediaQueryViewController *playlistViewController = [[JGMediaQueryViewController alloc] initWithNibName:@"JGMediaQueryViewController" bundle:nil];
             playlistViewController.title = playlistName;
             playlistViewController.queryType = JGMediaQueryTypeSongs;
             playlistViewController.mediaQuery = playlistQuery;
             playlistViewController.delegate = self;
-            [playlistQuery release];
             viewController = playlistViewController;
         }break;
             
@@ -352,12 +345,11 @@
             [albumsQuery addFilterPredicate:predicate];
             albumsQuery.groupingType = MPMediaGroupingAlbum;
             
-            JGMediaQueryViewController *albumsViewController = [[[JGMediaQueryViewController alloc] initWithNibName:@"JGMediaQueryViewController" bundle:nil] autorelease];
+            JGMediaQueryViewController *albumsViewController = [[JGMediaQueryViewController alloc] initWithNibName:@"JGMediaQueryViewController" bundle:nil];
             albumsViewController.title = artist;
             albumsViewController.queryType = JGMediaQueryTypeAlbums;
             albumsViewController.mediaQuery = albumsQuery;
             albumsViewController.delegate = self;
-            [albumsQuery release];
             viewController = albumsViewController;
         }break;
             
@@ -377,7 +369,7 @@
             
         case JGMediaQueryTypeAlbums:    
         case JGMediaQueryTypeAlbumArtist: {            
-            JGAlbumViewController *albumViewController = [[[JGAlbumViewController alloc] initWithNibName:@"JGAlbumViewController" bundle:nil] autorelease];
+            JGAlbumViewController *albumViewController = [[JGAlbumViewController alloc] initWithNibName:@"JGAlbumViewController" bundle:nil];
             MPMediaItemCollection *albumCollection = [[self items] objectAtIndex:itemIndex];
             albumViewController.albumCollection = albumCollection;
             albumViewController.delegate = self;
@@ -394,7 +386,7 @@
      
 }
 
-#pragma jgMediaQueryViewControllerDelegate callbacks
+#pragma mark - jgMediaQueryViewControllerDelegate callbacks
 - (void)jgMediaQueryViewController:(JGMediaQueryViewController *)mediaQueryViewController didPickMediaItems:(MPMediaItemCollection *)mediaItemCollection selectedItem:(MPMediaItem *)selectedItem {
     if([self.delegate respondsToSelector:@selector(jgMediaQueryViewController:didPickMediaItems:selectedItem:)]) {
         [self.delegate jgMediaQueryViewController:self didPickMediaItems:mediaItemCollection selectedItem:selectedItem];
@@ -407,7 +399,7 @@
     }
 }
 
-#pragma JGAlbumViewControllerDelegate callback
+#pragma mark - JGAlbumViewControllerDelegate callback
 - (void)jgAlbumViewController:(JGAlbumViewController *)albumViewController didPickMediaItems:(MPMediaItemCollection *)mediaItemCollection selectedItem:(MPMediaItem *)selectedItem {
     [self notifyDelegateOfSelection:mediaItemCollection selectedItem:selectedItem];
 }

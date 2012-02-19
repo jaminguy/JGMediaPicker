@@ -29,11 +29,6 @@
 @synthesize delegate;
 @synthesize selectedTabIndex;
 
-- (void)dealloc {
-    self.tabBarController = nil;
-    [super dealloc];
-}
-
 - (id)init {
     self = [super init];
     if(self) {
@@ -44,43 +39,43 @@
 }
 
 - (void)setupViewControllers {
-    JGMediaQueryViewController *playlistsViewController = [[[JGMediaQueryViewController alloc] initWithNibName:@"JGMediaQueryViewController" bundle:nil] autorelease];
+    JGMediaQueryViewController *playlistsViewController = [[JGMediaQueryViewController alloc] initWithNibName:@"JGMediaQueryViewController" bundle:nil];
     playlistsViewController.queryType = JGMediaQueryTypePlaylists;
     playlistsViewController.mediaQuery = [MPMediaQuery playlistsQuery];
     playlistsViewController.title = NSLocalizedString(@"Playlists", @"Playlists");
     playlistsViewController.tabBarItem.image = [UIImage imageNamed:@"Playlists.png"];
     playlistsViewController.delegate = self;
     playlistsViewController.showsCancelButton = YES;
-    UINavigationController *playlistsNavigationController = [[[UINavigationController alloc] initWithRootViewController:playlistsViewController] autorelease];
+    UINavigationController *playlistsNavigationController = [[UINavigationController alloc] initWithRootViewController:playlistsViewController];
     
-    JGMediaQueryViewController *artistsViewController = [[[JGMediaQueryViewController alloc] initWithNibName:@"JGMediaQueryViewController" bundle:nil] autorelease];
+    JGMediaQueryViewController *artistsViewController = [[JGMediaQueryViewController alloc] initWithNibName:@"JGMediaQueryViewController" bundle:nil];
     artistsViewController.queryType = JGMediaQueryTypeArtists;
     artistsViewController.mediaQuery = [MPMediaQuery artistsQuery];
     artistsViewController.title = NSLocalizedString(@"Artists", @"Artists");
     artistsViewController.tabBarItem.image = [UIImage imageNamed:@"Artists.png"];
     artistsViewController.delegate = self;
     artistsViewController.showsCancelButton = YES;
-    UINavigationController *artistsNavigationController = [[[UINavigationController alloc] initWithRootViewController:artistsViewController] autorelease];
+    UINavigationController *artistsNavigationController = [[UINavigationController alloc] initWithRootViewController:artistsViewController];
     
-    JGMediaQueryViewController *albumsViewController = [[[JGMediaQueryViewController alloc] initWithNibName:@"JGMediaQueryViewController" bundle:nil] autorelease];
+    JGMediaQueryViewController *albumsViewController = [[JGMediaQueryViewController alloc] initWithNibName:@"JGMediaQueryViewController" bundle:nil];
     albumsViewController.queryType = JGMediaQueryTypeAlbums;
     albumsViewController.mediaQuery = [MPMediaQuery albumsQuery];
     albumsViewController.title = NSLocalizedString(@"Albums", @"Albums");
     albumsViewController.tabBarItem.image = [UIImage imageNamed:@"Albums.png"];
     albumsViewController.delegate = self;
     albumsViewController.showsCancelButton = YES;
-    UINavigationController *albumsNavigationController = [[[UINavigationController alloc] initWithRootViewController:albumsViewController] autorelease];
+    UINavigationController *albumsNavigationController = [[UINavigationController alloc] initWithRootViewController:albumsViewController];
     
-    JGMediaQueryViewController *songsViewController = [[[JGMediaQueryViewController alloc] initWithNibName:@"JGMediaQueryViewController" bundle:nil] autorelease];
+    JGMediaQueryViewController *songsViewController = [[JGMediaQueryViewController alloc] initWithNibName:@"JGMediaQueryViewController" bundle:nil];
     songsViewController.queryType = JGMediaQueryTypeSongs;
     songsViewController.mediaQuery = [MPMediaQuery songsQuery];
     songsViewController.title = NSLocalizedString(@"Songs", @"Songs");
     songsViewController.tabBarItem.image = [UIImage imageNamed:@"Songs.png"];
     songsViewController.delegate = self;
     songsViewController.showsCancelButton = YES;
-    UINavigationController *songsNavigationController = [[[UINavigationController alloc] initWithRootViewController:songsViewController] autorelease];
+    UINavigationController *songsNavigationController = [[UINavigationController alloc] initWithRootViewController:songsViewController];
     
-    self.tabBarController = [[[UITabBarController alloc] init] autorelease];
+    self.tabBarController = [[UITabBarController alloc] init];
     self.tabBarController.viewControllers = [NSArray arrayWithObjects:playlistsNavigationController, artistsNavigationController, albumsNavigationController, songsNavigationController, nil];
     self.tabBarController.delegate = self;
     [self updateTabBarControllerIndex];
