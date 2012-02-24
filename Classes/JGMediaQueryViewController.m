@@ -341,7 +341,7 @@
             MPMediaItemCollection *mediaItemCollection = [[self items] objectAtIndex:itemIndex];
             NSString *artist = [[mediaItemCollection representativeItem] artist];
             MPMediaQuery *albumsQuery = [[MPMediaQuery alloc] init];
-            MPMediaPropertyPredicate *predicate = [MPMediaPropertyPredicate predicateWithValue:artist forProperty:MPMediaItemPropertyAlbumArtist comparisonType:MPMediaPredicateComparisonEqualTo];
+            MPMediaPropertyPredicate *predicate = [MPMediaPropertyPredicate predicateWithValue:artist forProperty:MPMediaItemPropertyArtist comparisonType:MPMediaPredicateComparisonEqualTo];
             [albumsQuery addFilterPredicate:predicate];
             albumsQuery.groupingType = MPMediaGroupingAlbum;
             
