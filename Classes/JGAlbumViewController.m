@@ -34,6 +34,7 @@
 
 @synthesize delegate;
 @synthesize albumCollection;
+@synthesize showsCancelButton;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -57,6 +58,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if(self.showsCancelButton) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self.delegate action:@selector(notifyDelegateOfCancellation)];
+    }
 
     [[self tableView] setSeparatorColor:kSeparatorColor];
     

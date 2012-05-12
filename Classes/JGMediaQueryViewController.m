@@ -346,6 +346,7 @@
             albumsQuery.groupingType = MPMediaGroupingAlbum;
             
             JGMediaQueryViewController *albumsViewController = [[JGMediaQueryViewController alloc] initWithNibName:@"JGMediaQueryViewController" bundle:nil];
+            albumsViewController.showsCancelButton = YES;
             albumsViewController.title = artist;
             albumsViewController.queryType = JGMediaQueryTypeAlbums;
             albumsViewController.mediaQuery = albumsQuery;
@@ -371,8 +372,9 @@
         case JGMediaQueryTypeAlbumArtist: {            
             JGAlbumViewController *albumViewController = [[JGAlbumViewController alloc] initWithNibName:@"JGAlbumViewController" bundle:nil];
             MPMediaItemCollection *albumCollection = [[self items] objectAtIndex:itemIndex];
-            albumViewController.albumCollection = albumCollection;
             albumViewController.delegate = self;
+            albumViewController.showsCancelButton = YES;
+            albumViewController.albumCollection = albumCollection;
             viewController = albumViewController;
         }break;
             
