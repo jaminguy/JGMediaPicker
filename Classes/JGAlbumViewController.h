@@ -23,6 +23,8 @@
 
 @property (assign, nonatomic) IBOutlet JGAlbumTrackTableViewCell *albumTrackTableViewCell;
 
+@property (nonatomic, assign) BOOL showsCancelButton;
+
 @end
 
 @protocol JGAlbumViewController <NSObject>
