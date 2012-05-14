@@ -9,6 +9,7 @@
 #import "JGAlbumViewController.h"
 
 #import <MediaPlayer/MediaPlayer.h>
+#import <AVFoundation/AVAsset.h>
 
 #import "MPMediaItem+JGExtensions.h"
 #import "MPMediaItemCollection+JGExtensions.h"
@@ -142,10 +143,24 @@
     }
     
     MPMediaItem *mediaItem = [[[self albumCollection] items] objectAtIndex:indexPath.row];
+
+    BOOL protected = NO;    
+    BOOL exportable = YES;
+    NSURL *url = [mediaItem valueForProperty:MPMediaItemPropertyAssetURL];
+    if (url) {
+        AVURLAsset* assetToLoad = [[AVURLAsset alloc] initWithURL:url options:nil];
+        protected = assetToLoad.hasProtectedContent;    
+        BOOL exportable = true;
+        exportable = assetToLoad.exportable;
+    } else {
+        protected = YES;
+    }
     cell.trackNumberLabel.text = [NSString stringWithFormat:@"%d",[[mediaItem trackNumber] intValue]];
     cell.trackNameLabel.text = [mediaItem title];
     cell.trackLengthLabel.text = [mediaItem trackLengthString];
-
+    if (protected || !exportable) {
+        cell.trackNameLabel.textColor = [UIColor redColor];
+    }
     //make odd rows gray    
     cell.backgroundView.backgroundColor = indexPath.row % 2 != 0 ? kGrayBackgroundColor : [UIColor whiteColor];
 
