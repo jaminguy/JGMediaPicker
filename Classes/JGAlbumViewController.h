@@ -24,6 +24,7 @@
 @property (assign, nonatomic) IBOutlet JGAlbumTrackTableViewCell *albumTrackTableViewCell;
 
 @property (nonatomic, assign) BOOL showsCancelButton;
+@property (nonatomic, assign) BOOL allowsSelectionOfNonPlayableItem;
 
 @end
 

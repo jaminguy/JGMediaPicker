@@ -17,6 +17,9 @@
 @property (nonatomic, retain) UITabBarController *tabBarController;
 @property (nonatomic, retain) UIViewController *viewController;
 
+//Controls whether non-playable items are selectable.
+@property (nonatomic, assign) BOOL allowsSelectionOfNonPlayableItem;
+
 - (void)setupViewControllers;
 - (void)updateTabBarControllerIndex;
 
@@ -28,11 +31,13 @@
 @synthesize tabBarController;
 @synthesize delegate;
 @synthesize selectedTabIndex;
+@synthesize allowsSelectionOfNonPlayableItem;
 
 - (id)init {
     self = [super init];
     if(self) {
         selectedTabIndex = JGMediaPickerTabIndex_Artists;
+        allowsSelectionOfNonPlayableItem = YES;
         [self setupViewControllers];
     }
     return self;
@@ -46,6 +51,7 @@
     playlistsViewController.tabBarItem.image = [UIImage imageNamed:@"Playlists.png"];
     playlistsViewController.delegate = self;
     playlistsViewController.showsCancelButton = YES;
+    playlistsViewController.allowsSelectionOfNonPlayableItem = self.allowsSelectionOfNonPlayableItem;
     UINavigationController *playlistsNavigationController = [[UINavigationController alloc] initWithRootViewController:playlistsViewController];
     
     JGMediaQueryViewController *artistsViewController = [[JGMediaQueryViewController alloc] initWithNibName:@"JGMediaQueryViewController" bundle:nil];
@@ -55,6 +61,7 @@
     artistsViewController.tabBarItem.image = [UIImage imageNamed:@"Artists.png"];
     artistsViewController.delegate = self;
     artistsViewController.showsCancelButton = YES;
+    artistsViewController.allowsSelectionOfNonPlayableItem = self.allowsSelectionOfNonPlayableItem;
     UINavigationController *artistsNavigationController = [[UINavigationController alloc] initWithRootViewController:artistsViewController];
     
     JGMediaQueryViewController *albumsViewController = [[JGMediaQueryViewController alloc] initWithNibName:@"JGMediaQueryViewController" bundle:nil];
@@ -64,6 +71,7 @@
     albumsViewController.tabBarItem.image = [UIImage imageNamed:@"Albums.png"];
     albumsViewController.delegate = self;
     albumsViewController.showsCancelButton = YES;
+    albumsViewController.allowsSelectionOfNonPlayableItem = self.allowsSelectionOfNonPlayableItem;
     UINavigationController *albumsNavigationController = [[UINavigationController alloc] initWithRootViewController:albumsViewController];
     
     JGMediaQueryViewController *songsViewController = [[JGMediaQueryViewController alloc] initWithNibName:@"JGMediaQueryViewController" bundle:nil];
@@ -73,8 +81,9 @@
     songsViewController.tabBarItem.image = [UIImage imageNamed:@"Songs.png"];
     songsViewController.delegate = self;
     songsViewController.showsCancelButton = YES;
+    songsViewController.allowsSelectionOfNonPlayableItem = self.allowsSelectionOfNonPlayableItem;
     UINavigationController *songsNavigationController = [[UINavigationController alloc] initWithRootViewController:songsViewController];
-    
+
     self.tabBarController = [[UITabBarController alloc] init];
     self.tabBarController.viewControllers = [NSArray arrayWithObjects:playlistsNavigationController, artistsNavigationController, albumsNavigationController, songsNavigationController, nil];
     self.tabBarController.delegate = self;

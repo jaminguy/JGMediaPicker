@@ -43,6 +43,7 @@
 @synthesize queryType;
 @synthesize mediaQuery;
 @synthesize showsCancelButton;
+@synthesize allowsSelectionOfNonPlayableItem;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -277,6 +278,14 @@
             [[cell textLabel] setText:[mediaItem title]];
             NSString *subTitle = [NSString stringWithFormat:@"%@ - %@", [mediaItem albumTitle], [mediaItem albumArtist]];
             [[cell detailTextLabel] setText:subTitle];
+            
+            if (!self.allowsSelectionOfNonPlayableItem && ![mediaItem isPlayable]) {
+                cell.userInteractionEnabled = NO;
+                for (UILabel *label in [NSArray arrayWithObjects:[cell textLabel], [cell detailTextLabel], nil]) {
+                    label.textColor = [UIColor lightGrayColor];
+                }
+            }
+            
         }break;
             
         default:
@@ -330,6 +339,8 @@
             [playlistQuery addFilterPredicate:predicate];
             
             JGMediaQueryViewController *playlistViewController = [[JGMediaQueryViewController alloc] initWithNibName:@"JGMediaQueryViewController" bundle:nil];
+            playlistViewController.showsCancelButton = YES;
+            playlistViewController.allowsSelectionOfNonPlayableItem = self.allowsSelectionOfNonPlayableItem;
             playlistViewController.title = playlistName;
             playlistViewController.queryType = JGMediaQueryTypeSongs;
             playlistViewController.mediaQuery = playlistQuery;
@@ -347,6 +358,7 @@
             
             JGMediaQueryViewController *albumsViewController = [[JGMediaQueryViewController alloc] initWithNibName:@"JGMediaQueryViewController" bundle:nil];
             albumsViewController.showsCancelButton = YES;
+            albumsViewController.allowsSelectionOfNonPlayableItem = self.allowsSelectionOfNonPlayableItem;
             albumsViewController.title = artist;
             albumsViewController.queryType = JGMediaQueryTypeAlbums;
             albumsViewController.mediaQuery = albumsQuery;
@@ -371,9 +383,10 @@
         case JGMediaQueryTypeAlbums:    
         case JGMediaQueryTypeAlbumArtist: {            
             JGAlbumViewController *albumViewController = [[JGAlbumViewController alloc] initWithNibName:@"JGAlbumViewController" bundle:nil];
+            albumViewController.showsCancelButton = YES;
+            albumViewController.allowsSelectionOfNonPlayableItem = self.allowsSelectionOfNonPlayableItem;
             MPMediaItemCollection *albumCollection = [[self items] objectAtIndex:itemIndex];
             albumViewController.delegate = self;
-            albumViewController.showsCancelButton = YES;
             albumViewController.albumCollection = albumCollection;
             viewController = albumViewController;
         }break;
