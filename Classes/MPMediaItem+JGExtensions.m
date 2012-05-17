@@ -109,6 +109,10 @@
 	}
 }
 
+- (BOOL)isPlayable {
+    return ![self assetNeedsToDownload] && ![self assetHasBeenDeleted];
+}
+
 - (BOOL)existsInLibrary {
 	MPMediaPropertyPredicate *predicate = [MPMediaPropertyPredicate predicateWithValue:[self persistentID]
 																		   forProperty: MPMediaItemPropertyPersistentID];

@@ -41,4 +41,8 @@
 // Match has been turned off.
 - (BOOL)existsInLibrary;
 
+// Returns YES if this mediaItem does not need downloading and 
+// has not been deleted.  Returns NO otherwise.
+- (BOOL)isPlayable;
+
 @end
