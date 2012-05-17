@@ -26,6 +26,7 @@ typedef enum {
 @property (nonatomic, assign) JGMediaQueryType queryType;
 @property (nonatomic, retain) MPMediaQuery *mediaQuery;
 @property (nonatomic, assign) BOOL showsCancelButton;
+@property (nonatomic, assign) BOOL allowsSelectionOfNonPlayableItem;
 
 @end
 
