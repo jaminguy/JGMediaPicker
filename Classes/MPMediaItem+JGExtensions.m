@@ -10,31 +10,31 @@
 
 @implementation MPMediaItem (JGExtensions)
 
-- (NSString *)artist {
+- (NSString *)jg_artist {
     return [self valueForProperty:MPMediaItemPropertyArtist];
 }
 
-- (NSString *)albumArtist {
+- (NSString *)jg_albumArtist {
     return [self valueForProperty:MPMediaItemPropertyAlbumArtist];
 }
 
-- (NSString *)title {
+- (NSString *)jg_title {
     return [self valueForProperty:MPMediaItemPropertyTitle];
 }
 
-- (NSString *)albumTitle {
+- (NSString *)jg_albumTitle {
     return [self valueForProperty:MPMediaItemPropertyAlbumTitle];
 }
 
-- (NSURL *)assetURL {
+- (NSURL *)jg_assetURL {
 	return [self valueForProperty:MPMediaItemPropertyAssetURL];
 }
 
-- (NSString *)persistentID {
+- (NSString *)jg_persistentID {
 	return [self valueForProperty:MPMediaItemPropertyPersistentID];
 }
 
-- (UIImage *)artworkWithSize:(CGSize)size {
+- (UIImage *)jg_artworkWithSize:(CGSize)size {
     UIImage *image = nil;
     MPMediaItemArtwork *artwork = [self valueForProperty:MPMediaItemPropertyArtwork];
     if (artwork != nil) {
@@ -43,7 +43,7 @@
     return image;
 }
 
-- (UIImage *)artwork {
+- (UIImage *)jg_artwork {
     UIImage *image = nil;
     MPMediaItemArtwork *artwork = [self valueForProperty:MPMediaItemPropertyArtwork];
     if (artwork != nil) {
@@ -52,28 +52,28 @@
     return image;
 }
 
-- (NSTimeInterval)trackLength {
+- (NSTimeInterval)jg_trackLength {
     return [[self valueForProperty:MPMediaItemPropertyPlaybackDuration] doubleValue];
 }
 
-- (NSDate *)releaseDate {
+- (NSDate *)jg_releaseDate {
     return [self valueForProperty:MPMediaItemPropertyReleaseDate];
 }
 
-- (NSString *)releaseYearString {
+- (NSString *)jg_releaseYearString {
     return [NSString stringWithFormat:@"%@", [self valueForProperty:@"year"]];
 }
 
-- (NSNumber *)trackNumber {
+- (NSNumber *)jg_trackNumber {
     return [self valueForProperty:MPMediaItemPropertyAlbumTrackNumber];
 }
 
-- (NSString *)trackLengthString {
+- (NSString *)jg_trackLengthString {
     NSString *timeString = nil;
     const int secsPerMin = 60;
 	const int minsPerHour = 60;
 	const char *timeSep = ":"; //@TODO localise...
-	NSTimeInterval seconds = [self trackLength];
+	NSTimeInterval seconds = [self jg_trackLength];
 	seconds = floor(seconds);
 	
 	if(seconds < 60.0) {	
@@ -95,26 +95,26 @@
     return timeString;
 }
 
-- (BOOL)assetNeedsToDownload {
-	return ([self assetURL] == nil);
+- (BOOL)jg_assetNeedsToDownload {
+	return ([self jg_assetURL] == nil);
 }
 
-- (BOOL)assetHasBeenDeleted {
-	if ([self assetURL] == nil) {
+- (BOOL)jg_assetHasBeenDeleted {
+	if ([self jg_assetURL] == nil) {
 		return NO;
 	} else {
-		NSString *urlString = [[self assetURL] absoluteString];
+		NSString *urlString = [[self jg_assetURL] absoluteString];
 		BOOL assetURLPointsNowhere = ([urlString rangeOfString:@"ipod-library://item/item.(null)"].location != NSNotFound);
 		return assetURLPointsNowhere;
 	}
 }
 
-- (BOOL)isPlayable {
-    return ![self assetNeedsToDownload] && ![self assetHasBeenDeleted];
+- (BOOL)jg_isPlayable {
+    return ![self jg_assetNeedsToDownload] && ![self jg_assetHasBeenDeleted];
 }
 
-- (BOOL)existsInLibrary {
-	MPMediaPropertyPredicate *predicate = [MPMediaPropertyPredicate predicateWithValue:[self persistentID]
+- (BOOL)jg_existsInLibrary {
+	MPMediaPropertyPredicate *predicate = [MPMediaPropertyPredicate predicateWithValue:[self jg_persistentID]
 																		   forProperty: MPMediaItemPropertyPersistentID];
 	MPMediaQuery *query = [[MPMediaQuery alloc] init];
 	[query addFilterPredicate:predicate];

@@ -10,6 +10,6 @@
 
 @interface MPMediaPlaylist (JGExtensions)
 
-- (NSNumber *)persistentID;
-- (NSString *)name;
+- (NSNumber *)jg_persistentID;
+- (NSString *)jg_name;
 @end

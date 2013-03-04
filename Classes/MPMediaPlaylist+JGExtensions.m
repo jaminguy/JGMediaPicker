@@ -10,11 +10,11 @@
 
 @implementation MPMediaPlaylist (JGExtensions)
 
-- (NSNumber *)persistentID {
+- (NSNumber *)jg_persistentID {
     return [self valueForProperty:MPMediaPlaylistPropertyPersistentID];
 }
 
-- (NSString *)name {
+- (NSString *)jg_name {
     return [self valueForProperty:MPMediaPlaylistPropertyName];
 }
 

@@ -259,27 +259,27 @@
             
         case JGMediaQueryTypePlaylists: {
             MPMediaPlaylist *playlist = (MPMediaPlaylist *)mediaItemCollection;            
-            [[cell textLabel] setText:[playlist name]];
+            [[cell textLabel] setText:[playlist jg_name]];
         }break;
             
         case JGMediaQueryTypeArtists: {
-            [[cell textLabel] setText:[mediaItem artist]];
+            [[cell textLabel] setText:[mediaItem jg_artist]];
         }break;
             
         case JGMediaQueryTypeAlbums:
         case JGMediaQueryTypeAlbumArtist: {
-            [[cell textLabel] setText:[mediaItem albumTitle]];
-            [[cell detailTextLabel] setText:[mediaItem albumArtist]];
-            UIImage *albumImage = [mediaItem artworkWithSize:kAlbumArtSize] ?: [UIImage imageNamed:@"AlbumArtPlaceholder.png"];
+            [[cell textLabel] setText:[mediaItem jg_albumTitle]];
+            [[cell detailTextLabel] setText:[mediaItem jg_albumArtist]];
+            UIImage *albumImage = [mediaItem jg_artworkWithSize:kAlbumArtSize] ?: [UIImage imageNamed:@"AlbumArtPlaceholder.png"];
             [[cell imageView] setImage:albumImage];
         }break;
             
         case JGMediaQueryTypeSongs: {
-            [[cell textLabel] setText:[mediaItem title]];
-            NSString *subTitle = [NSString stringWithFormat:@"%@ - %@", [mediaItem albumTitle], [mediaItem albumArtist]];
+            [[cell textLabel] setText:[mediaItem jg_title]];
+            NSString *subTitle = [NSString stringWithFormat:@"%@ - %@", [mediaItem jg_albumTitle], [mediaItem jg_albumArtist]];
             [[cell detailTextLabel] setText:subTitle];
             
-            if (!self.allowsSelectionOfNonPlayableItem && ![mediaItem isPlayable]) {
+            if (!self.allowsSelectionOfNonPlayableItem && ![mediaItem jg_isPlayable]) {
                 cell.userInteractionEnabled = NO;
                 for (UILabel *label in [NSArray arrayWithObjects:[cell textLabel], [cell detailTextLabel], nil]) {
                     label.textColor = [UIColor lightGrayColor];
@@ -331,8 +331,8 @@
     switch (self.queryType) {
         case JGMediaQueryTypePlaylists: {
             MPMediaPlaylist *playlist = (MPMediaPlaylist *)[[self items] objectAtIndex:itemIndex];
-            NSNumber *playlistPersistentID = [playlist persistentID];
-            NSString *playlistName = [playlist name];
+            NSNumber *playlistPersistentID = [playlist jg_persistentID];
+            NSString *playlistName = [playlist jg_name];
             
             MPMediaQuery *playlistQuery = [[MPMediaQuery alloc] init];
             MPMediaPropertyPredicate *predicate = [MPMediaPropertyPredicate predicateWithValue:playlistPersistentID forProperty:MPMediaPlaylistPropertyPersistentID comparisonType:MPMediaPredicateComparisonEqualTo];
@@ -350,7 +350,7 @@
             
         case JGMediaQueryTypeArtists: {
             MPMediaItemCollection *mediaItemCollection = [[self items] objectAtIndex:itemIndex];
-            NSString *artist = [[mediaItemCollection representativeItem] artist];
+            NSString *artist = [[mediaItemCollection representativeItem] jg_artist];
             MPMediaQuery *albumsQuery = [[MPMediaQuery alloc] init];
             MPMediaPropertyPredicate *predicate = [MPMediaPropertyPredicate predicateWithValue:artist forProperty:MPMediaItemPropertyArtist comparisonType:MPMediaPredicateComparisonEqualTo];
             [albumsQuery addFilterPredicate:predicate];

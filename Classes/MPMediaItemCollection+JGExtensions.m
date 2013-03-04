@@ -11,25 +11,25 @@
 
 @implementation MPMediaItemCollection (JGExtensions)
 
-- (NSNumber *)playbackLength {
+- (NSNumber *)jg_playbackLength {
     double totalTime = 0;
     for (MPMediaItem *mediaItem in self.items) {
-        totalTime += [mediaItem trackLength];
+        totalTime += [mediaItem jg_trackLength];
     }
     return [NSNumber numberWithDouble:totalTime];
 }
 
-- (BOOL)hasNoLocalItems {
+- (BOOL)jg_hasNoLocalItems {
 	for (MPMediaItem *mediaItem in self.items) {
-		if ([mediaItem existsInLibrary] && ![mediaItem assetNeedsToDownload])
+		if ([mediaItem jg_existsInLibrary] && ![mediaItem jg_assetNeedsToDownload])
 			return NO;
 	}
 	return YES;
 }
 
-- (BOOL)hasNoPlayableItems {
+- (BOOL)jg_hasNoPlayableItems {
 	for (MPMediaItem *mediaItem in self.items) {
-		if ([mediaItem existsInLibrary] && ![mediaItem assetHasBeenDeleted])
+		if ([mediaItem jg_existsInLibrary] && ![mediaItem jg_assetHasBeenDeleted])
 			return NO;
 	}
 	return YES;

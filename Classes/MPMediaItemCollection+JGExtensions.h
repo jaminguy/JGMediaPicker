@@ -10,13 +10,13 @@
 
 @interface MPMediaItemCollection (JGExtensions)
 
-- (NSNumber *)playbackLength;
+- (NSNumber *)jg_playbackLength;
 
 // Returns YES if none of the assets represented in 
 // this collection have been downloaded from the cloud.
-- (BOOL)hasNoLocalItems;
+- (BOOL)jg_hasNoLocalItems;
 
 // Returns YES if all items in the collection have been deleted.
-- (BOOL)hasNoPlayableItems;
+- (BOOL)jg_hasNoPlayableItems;
 
 @end

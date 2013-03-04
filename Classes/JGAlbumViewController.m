@@ -95,14 +95,14 @@
 - (void)updateUI {
     MPMediaItem *mediaItem = [[self albumCollection] representativeItem];
     if(mediaItem) {
-        self.title = [mediaItem artist];
-        self.albumArtistLabel.text = [mediaItem artist];
-        self.albumTitleLabel.text = [mediaItem albumTitle];
-        self.albumArtImageView.image = [mediaItem artworkWithSize:self.albumArtImageView.bounds.size] ?: [UIImage imageNamed:@"AlbumArtPlaceholderLarge.png"];
+        self.title = [mediaItem jg_artist];
+        self.albumArtistLabel.text = [mediaItem jg_artist];
+        self.albumTitleLabel.text = [mediaItem jg_albumTitle];
+        self.albumArtImageView.image = [mediaItem jg_artworkWithSize:self.albumArtImageView.bounds.size] ?: [UIImage imageNamed:@"AlbumArtPlaceholderLarge.png"];
         
-        NSString *yearString = [mediaItem releaseYearString];
+        NSString *yearString = [mediaItem jg_releaseYearString];
         self.albumReleaseDateLabel.text = yearString ? [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Released", @"Released"), yearString] : nil;
-        NSNumber *totalTimeInSeconds = [[self albumCollection] playbackLength];
+        NSNumber *totalTimeInSeconds = [[self albumCollection] jg_playbackLength];
         NSInteger totalTimeInMinutes = (NSInteger)[totalTimeInSeconds doubleValue] / 60;
         self.albumTrackCountTimeLabel.text = [NSString stringWithFormat:@"%d %@, %d Mins.", self.albumCollection.count, NSLocalizedString(@"Songs", @"Songs"), totalTimeInMinutes];
     }
@@ -144,10 +144,10 @@
     }
     
     MPMediaItem *mediaItem = [[[self albumCollection] items] objectAtIndex:indexPath.row];
-    cell.trackNumberLabel.text = [NSString stringWithFormat:@"%d",[[mediaItem trackNumber] intValue]];
-    cell.trackNameLabel.text = [mediaItem title];
-    cell.trackLengthLabel.text = [mediaItem trackLengthString];
-    if (!self.allowsSelectionOfNonPlayableItem && ![mediaItem isPlayable]) {
+    cell.trackNumberLabel.text = [NSString stringWithFormat:@"%d",[[mediaItem jg_trackNumber] intValue]];
+    cell.trackNameLabel.text = [mediaItem jg_title];
+    cell.trackLengthLabel.text = [mediaItem jg_trackLengthString];
+    if (!self.allowsSelectionOfNonPlayableItem && ![mediaItem jg_isPlayable]) {
         cell.trackNameLabel.textColor = [UIColor lightGrayColor];
         cell.userInteractionEnabled = NO;
     }
