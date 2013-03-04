@@ -16,8 +16,8 @@
 
 @interface JGMediaQueryViewController () 
 
-@property (nonatomic, retain) NSArray *items;
-@property (nonatomic, retain) NSArray *itemSections;
+@property (nonatomic, strong) NSArray *items;
+@property (nonatomic, strong) NSArray *itemSections;
 
 - (void)updateItems;
 

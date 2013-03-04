@@ -14,30 +14,32 @@
 
 @interface JGMediaPickerController () <UITabBarControllerDelegate>
 
-@property (nonatomic, retain) UITabBarController *tabBarController;
-@property (nonatomic, retain) UIViewController *viewController;
+@property (nonatomic, strong) UITabBarController *tabBarController;
+@property (nonatomic, strong) UIViewController *viewController;
 
 //Controls whether non-playable items are selectable.
 @property (nonatomic, assign) BOOL allowsSelectionOfNonPlayableItem;
-
-- (void)setupViewControllers;
-- (void)updateTabBarControllerIndex;
 
 @end
 
 @implementation JGMediaPickerController
 
-@synthesize viewController;
-@synthesize tabBarController;
-@synthesize delegate;
-@synthesize selectedTabIndex;
-@synthesize allowsSelectionOfNonPlayableItem;
++ (void)jgMediaPickerControllerAsync:(void (^)(JGMediaPickerController *jgMediaPickerController))completion {
+    if (completion) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            JGMediaPickerController *jgMediaPickerController = [[JGMediaPickerController alloc] init];            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(jgMediaPickerController);
+            });
+        });
+    }
+}
 
 - (id)init {
     self = [super init];
     if(self) {
-        selectedTabIndex = JGMediaPickerTabIndex_Artists;
-        allowsSelectionOfNonPlayableItem = YES;
+        _selectedTabIndex = JGMediaPickerTabIndex_Artists;
+        _allowsSelectionOfNonPlayableItem = YES;
         [self setupViewControllers];
     }
     return self;
@@ -93,15 +95,15 @@
 }
 
 - (void)setSelectedTabIndex:(JGMediaPickerTabIndex)newTabIndex {
-    if(selectedTabIndex != newTabIndex) {
-        selectedTabIndex = newTabIndex;
+    if(_selectedTabIndex != newTabIndex) {
+        _selectedTabIndex = newTabIndex;
         [self updateTabBarControllerIndex];
     }
 }
 
 - (void)updateTabBarControllerIndex {
-    if(self.tabBarController.selectedIndex != selectedTabIndex) {
-        self.tabBarController.selectedIndex = selectedTabIndex;
+    if(self.tabBarController.selectedIndex != self.selectedTabIndex) {
+        self.tabBarController.selectedIndex = self.selectedTabIndex;
     }
 }
 

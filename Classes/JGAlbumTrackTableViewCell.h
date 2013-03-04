@@ -10,7 +10,7 @@
 
 @interface JGAlbumTrackTableViewCell : UITableViewCell
 
-@property (retain, nonatomic) IBOutlet UILabel *trackNumberLabel;
-@property (retain, nonatomic) IBOutlet UILabel *trackNameLabel;
-@property (retain, nonatomic) IBOutlet UILabel *trackLengthLabel;
+@property (strong, nonatomic) IBOutlet UILabel *trackNumberLabel;
+@property (strong, nonatomic) IBOutlet UILabel *trackNameLabel;
+@property (strong, nonatomic) IBOutlet UILabel *trackLengthLabel;
 @end

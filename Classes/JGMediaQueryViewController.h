@@ -20,11 +20,11 @@ typedef enum {
 
 @interface JGMediaQueryViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
-@property (retain, nonatomic) IBOutlet UITableView *itemTableView;
+@property (strong, nonatomic) IBOutlet UITableView *itemTableView;
 
-@property (nonatomic, retain) id delegate;
+@property (nonatomic, strong) id delegate;
 @property (nonatomic, assign) JGMediaQueryType queryType;
-@property (nonatomic, retain) MPMediaQuery *mediaQuery;
+@property (nonatomic, strong) MPMediaQuery *mediaQuery;
 @property (nonatomic, assign) BOOL showsCancelButton;
 @property (nonatomic, assign) BOOL allowsSelectionOfNonPlayableItem;
 

@@ -12,16 +12,16 @@
 
 @interface JGAlbumViewController : UITableViewController
 
-@property (retain, nonatomic) IBOutlet UIImageView *albumArtImageView;
-@property (retain, nonatomic) IBOutlet UILabel *albumArtistLabel;
-@property (retain, nonatomic) IBOutlet UILabel *albumTitleLabel;
-@property (retain, nonatomic) IBOutlet UILabel *albumReleaseDateLabel;
-@property (retain, nonatomic) IBOutlet UILabel *albumTrackCountTimeLabel;
+@property (strong, nonatomic) IBOutlet UIImageView *albumArtImageView;
+@property (strong, nonatomic) IBOutlet UILabel *albumArtistLabel;
+@property (strong, nonatomic) IBOutlet UILabel *albumTitleLabel;
+@property (strong, nonatomic) IBOutlet UILabel *albumReleaseDateLabel;
+@property (strong, nonatomic) IBOutlet UILabel *albumTrackCountTimeLabel;
 
-@property (retain, nonatomic) id delegate;
-@property (retain, nonatomic) MPMediaItemCollection *albumCollection;
+@property (strong, nonatomic) id delegate;
+@property (strong, nonatomic) MPMediaItemCollection *albumCollection;
 
-@property (assign, nonatomic) IBOutlet JGAlbumTrackTableViewCell *albumTrackTableViewCell;
+@property (weak, nonatomic) IBOutlet JGAlbumTrackTableViewCell *albumTrackTableViewCell;
 
 @property (nonatomic, assign) BOOL showsCancelButton;
 @property (nonatomic, assign) BOOL allowsSelectionOfNonPlayableItem;
