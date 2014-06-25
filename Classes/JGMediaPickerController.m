@@ -39,7 +39,7 @@
     self = [super init];
     if(self) {
         _selectedTabIndex = JGMediaPickerTabIndex_Artists;
-        _allowsSelectionOfNonPlayableItem = YES;
+        _allowsSelectionOfNonPlayableItem = NO;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self setupViewControllers];
         });
