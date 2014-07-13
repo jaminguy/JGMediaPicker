@@ -12,12 +12,18 @@
 
 #import "MPMediaItem+JGExtensions.h"
 #import "MPMediaPlaylist+JGExtensions.h"
+#import "UIImage+JGExtensions.h"
 #import "JGAlbumViewController.h"
+#import "JGMediaQueryTableViewCell.h"
 
 @interface JGMediaQueryViewController () 
 
 @property (nonatomic, strong) NSArray *items;
 @property (nonatomic, strong) NSArray *itemSections;
+
+@property (nonatomic, strong) UIImage *albumPlaceholderImage;
+@property (nonatomic, strong) UIImage *songPlaceholderImage;
+
 
 - (void)updateItems;
 
@@ -28,13 +34,20 @@
 
 @implementation JGMediaQueryViewController
 
-#define kPlaylistCellHeight 44.0
-#define kAlbumCellHeight 55.0
-#define kArtistCellHeight 44.0
-#define kSongCellHeight 44.0
-#define kAlbumArtSize CGSizeMake(110.0, 110.0)
+#define kPlaylistCellHeight 96.0
+#define kAlbumCellHeight 96.0
+#define kArtistCellHeight 96.0
+#define kSongCellHeight 58.0
+
+#define kSongArtSize CGSizeMake(50.0, 50.0)
+#define kAlbumArtSize CGSizeMake(88.0, 88.0)
 
 #define kItemCountThresholdForTableViewSections 25
+
+static NSString *PlaylistCellIdentifier = @"PlaylistCell";
+static NSString *ArtistCellIdentifier = @"ArtistCell";
+static NSString *AlbumCellIdentifier = @"AlbumCell";
+static NSString *SongCellIdentifier = @"SongCell";
 
 @synthesize itemTableView;
 @synthesize items;
@@ -47,7 +60,9 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {        
+    if (self) {
+        self.albumPlaceholderImage = [UIImage imageWithColor:[UIColor colorWithWhite:0.98 alpha:1.0] size:kAlbumArtSize];
+        self.songPlaceholderImage = [UIImage imageWithColor:[UIColor colorWithWhite:1.0 alpha:1.0] size:kSongArtSize];
     }
     return self;
 }
@@ -101,6 +116,20 @@
     }
 }
 
+- (NSString *)cellIdentifierForQueryType:(JGMediaQueryType)type {
+    switch (type) {
+        case JGMediaQueryTypePlaylists:
+            return PlaylistCellIdentifier;
+        case JGMediaQueryTypeArtists:
+            return ArtistCellIdentifier;
+        case JGMediaQueryTypeAlbums:
+        case JGMediaQueryTypeAlbumArtist:
+            return AlbumCellIdentifier;
+        case JGMediaQueryTypeSongs:
+            return SongCellIdentifier;
+    }
+}
+
 - (void)notifyDelegateOfSelection:(MPMediaItemCollection *)mediaItems selectedItem:(MPMediaItem *)selectedItem {
     if([self.delegate respondsToSelector:@selector(jgMediaQueryViewController:didPickMediaItems:selectedItem:)]) {
         [self.delegate jgMediaQueryViewController:self didPickMediaItems:mediaItems selectedItem:selectedItem];
@@ -125,6 +154,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self.itemTableView registerClass:[JGMediaQueryTableViewCell class] forCellReuseIdentifier:PlaylistCellIdentifier];
+    [self.itemTableView registerClass:[JGMediaQueryTableViewCell class] forCellReuseIdentifier:ArtistCellIdentifier];
+    [self.itemTableView registerClass:[JGMediaQueryTableViewCell class] forCellReuseIdentifier:AlbumCellIdentifier];
+    [self.itemTableView registerClass:[JGMediaQueryTableViewCell class] forCellReuseIdentifier:SongCellIdentifier];
     
     if(self.showsCancelButton) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonTap:)];
@@ -198,47 +232,9 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *PlaylistCellIdentifier = @"PlaylistCell";
-    static NSString *ArtistCellIdentifier = @"ArtistCell";
-    static NSString *AlbumCellIdentifier = @"AlbumCell";
-    static NSString *SongCellIdentifier = @"SongCell";
     
-    UITableViewCell *cell = nil;
-    switch (self.queryType) {
-
-        case JGMediaQueryTypePlaylists: {            
-            cell = [tableView dequeueReusableCellWithIdentifier:PlaylistCellIdentifier];
-            if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:PlaylistCellIdentifier];        
-            }
-        }break;
-            
-        case JGMediaQueryTypeArtists: {
-            cell = [tableView dequeueReusableCellWithIdentifier:ArtistCellIdentifier];
-            if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ArtistCellIdentifier];        
-            }
-        }break;
-            
-        case JGMediaQueryTypeAlbums:
-        case JGMediaQueryTypeAlbumArtist: {
-            cell = [tableView dequeueReusableCellWithIdentifier:AlbumCellIdentifier];
-            if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:AlbumCellIdentifier];        
-            }
-        }break;
-            
-        case JGMediaQueryTypeSongs: {
-            cell = [tableView dequeueReusableCellWithIdentifier:SongCellIdentifier];
-            if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:SongCellIdentifier];        
-            }
-        }break;
-            
-        default:
-            break;
-    }
-
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[self cellIdentifierForQueryType:self.queryType] forIndexPath:indexPath];
+    
     NSInteger itemIndex = indexPath.row;
     if(self.itemSections.count) {
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -251,6 +247,7 @@
     else {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
+
     
     MPMediaItemCollection *mediaItemCollection = [[self items] objectAtIndex:itemIndex];
     MPMediaItem *mediaItem = [mediaItemCollection representativeItem];
@@ -260,24 +257,56 @@
         case JGMediaQueryTypePlaylists: {
             MPMediaPlaylist *playlist = (MPMediaPlaylist *)mediaItemCollection;            
             [[cell textLabel] setText:[playlist jg_name]];
+            [[cell imageView] setImage:self.albumPlaceholderImage];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIImage *representativeImage = [mediaItem jg_artworkWithSize:kAlbumArtSize];
+                if (representativeImage) {
+                    [[cell imageView] setImage:representativeImage];
+                    [cell setNeedsLayout];
+                }
+            });
         }break;
             
         case JGMediaQueryTypeArtists: {
             [[cell textLabel] setText:[mediaItem jg_artist]];
+            [[cell imageView] setImage:self.albumPlaceholderImage];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIImage *representativeImage = [mediaItem jg_artworkWithSize:kAlbumArtSize];
+                if (representativeImage) {
+                    [[cell imageView] setImage:representativeImage];
+                    [cell setNeedsLayout];
+                }
+            });
         }break;
             
         case JGMediaQueryTypeAlbums:
         case JGMediaQueryTypeAlbumArtist: {
             [[cell textLabel] setText:[mediaItem jg_albumTitle]];
             [[cell detailTextLabel] setText:[mediaItem jg_albumArtist]];
-            UIImage *albumImage = [mediaItem jg_artworkWithSize:kAlbumArtSize] ?: [UIImage imageNamed:@"AlbumArtPlaceholder.png"];
-            [[cell imageView] setImage:albumImage];
+            [[cell imageView] setImage:self.albumPlaceholderImage];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIImage *representativeImage = [mediaItem jg_artworkWithSize:kAlbumArtSize];
+                if (representativeImage) {
+                    [[cell imageView] setImage:representativeImage];
+                    [cell setNeedsLayout];
+                }
+            });
         }break;
             
         case JGMediaQueryTypeSongs: {
             [[cell textLabel] setText:[mediaItem jg_title]];
             NSString *subTitle = [NSString stringWithFormat:@"%@ - %@", [mediaItem jg_albumTitle], [mediaItem jg_albumArtist]];
             [[cell detailTextLabel] setText:subTitle];
+            [[cell imageView] setImage:self.songPlaceholderImage];
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIImage *representativeImage = [mediaItem jg_artworkWithSize:kSongArtSize];
+                if (representativeImage) {
+                    [[cell imageView] setImage:representativeImage];
+                    [cell setNeedsLayout];
+                }
+            });
             
             if (!self.allowsSelectionOfNonPlayableItem && ![mediaItem jg_isPlayable]) {
                 cell.userInteractionEnabled = NO;
